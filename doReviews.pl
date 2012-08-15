@@ -6,7 +6,7 @@ open OUTFILE, ">$ARGV[0].reviews" or die $!;
 
 my %iphist = ();
 $i = 0;
-	while($i < 50 &&  ($line = <INFILE>)) {
+	while(  ($line = <INFILE>)) {
 		
 	  if($line =~ m/getReviews/){ 
 		$i++;
@@ -21,9 +21,7 @@ $i = 0;
 			$iphist{$ip .'-'.$st}{'start'}=$iphist{$ip}{'start'};
 			$iphist{$ip .'-'.$st}{'count'}=$iphist{$ip}{'count'};		delete $iphist{$ip}{'count'};
 			$iphist{$ip .'-'.$st}{'end'}=$iphist{$ip}{'end'};			delete $iphist{$ip}{'end'};
-			$iphist{$ip .'-'.$st}{'filters'}=$iphist{$ip}{'filters'};	delete $iphist{$ip}{'filters'};
-			
-			print $ip, ' ',$iphist{$ip .'-'.$st}{'start'}, "\n";
+			$iphist{$ip .'-'.$st}{'filters'}=$iphist{$ip}{'filters'};	delete $iphist{$ip}{'filters'};			
 		}
 		$iphist{$ip}{'count'}++;
 		if($iphist{$ip}{'count'} == 1){
