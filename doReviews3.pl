@@ -77,12 +77,14 @@ $messed=0;
 		#if($lastFilter == $filter && $offset == 0){$iphist{$ip}{'count'}--;} #discount page reloads, double filter clicks
 		if($lastFilter eq ''){#if initial load
 			$iphist{$ip}{'start'}=$time;
+			$offset='';
 			$recipehist{$recipe}{'first'}++;			
 		} elsif ($iphist{$ip}{'count'} ==2 && ($lastFilter ne $filter || $offset > 0)){			
 			$iphist{$ip}{'engaged-start'}=$time; #if engaged set engaged time
 			$recipehist{$recipe}{'engaged'}++;
 		} elsif ($iphist{$ip}{'count'} >1 && $lastFilter eq $filter && $numFilter == 1 && $offset == 0){
 			$recipehist{$recipe}{'reload'}++;
+			$offset='';
 		} else {
 			$recipehist{$recipe}{'other'}++;
 		}
@@ -102,7 +104,7 @@ $messed=0;
 		$iphist{$ip}{'end'}=$time;
 		$deltatime=0;
 		if($iphist{$ip}{'engaged-start'}){$deltatime = $iphist{$ip}{'end'} - $iphist{$ip}{'engaged-start'};}
-		if($url =~ m/recipe/ ){$urlflag = "recipe";}
+		if($url =~ m/recipe\/index\.html/ ){$urlflag = "recipe";}
 			elsif ($url =~ m/review/) {$urlflag = "review";}
 			elsif ($url =~ m/\-/){$urlflag="-";}
 		($qparam)=($url =~ m/\?(.{0,10})/); 
@@ -111,8 +113,7 @@ $messed=0;
 	  }	#if
 #	    if(($line = readline $filehandles[$minTime{"index"}])){ 		
 		while(($line = readline $filehandles[$minTime{"index"}]) !~ m/getReviews/ && $line){;}
-	    if($line){ 
-	
+	    if($line){ 	
 			my ($date) = ($line =~ m/\[(.*)-0400\]/);
 			my ($day, $month, $year, $hour, $min, $sec) = ($date =~ m/([0-9]+)\/(.*)\/(\d*):(\d*):(\d*):(\d*)/);
 			my $time = timegm($sec,$min,$hour,$day,$monthlook{$month}-1,$year);
